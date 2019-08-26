@@ -12,7 +12,11 @@ static int main (string[] args) {
 	        }
 	   }  */
 
-	ClassroomManager.read_and_print_media ("class.csv");
+	ReviewManager.read_and_print_media ("bgg-13m-reviews.csv");
 
 	return 0;
 }
+
+/*  public void sort_by_id (Array <Review> collection) {
+        Sorter.bubble_sort (collection);
+   }  */

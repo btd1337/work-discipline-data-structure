@@ -1,6 +1,6 @@
 using Readline;
 
-class ClassroomManager : Object {
+class ReviewManager : Object {
 
 public static void get_student_data () {
 	int cmd = 0;
@@ -46,18 +46,27 @@ public static void read_classrom_data (string path) {
  */
 public static void read_and_print_media (string path) {
 	File file = File.new_for_path(path);
+	int review_number_properties = 30;
 
 	if (!file.query_exists ()) {
 		stderr.printf ("File '%s' doesn't exist.\n", file.get_path());
 	} else {
 		try {
 			var dis = new DataInputStream (file.read());
-			var student_data = new string[4];
+			var review_data = new string[review_number_properties];
 			string line;
-			while ((line = dis.read_line(null)) != null) {
-				student_data = CSVHandler.csv_to_array (line);
+			// while ((line = dis.read_line(null)) != null) {
+			int i=0;
+			while (i++ < 5) {
+				line = dis.read_line(null);
+				review_data = CSVHandler.csv_to_array (line);
 
-				stdout.printf ("Aluno: %s\tMédia: %.2f\n", student_data[1], ((float.parse (student_data[2]) + float.parse (student_data[3]))/2));
+				//stdout.printf ("Aluno: %s\tMédia: %.2f\n", review_data[1], ((float.parse (review_data[2]) + float.parse (review_data[3]))/2));
+				stdout.printf ("Review: ");
+				foreach (var item in review_data) {
+					stdout.printf ("%s ", item);
+				}
+				stdout.printf ("\n");
 			}
 		} catch (Error e) {
 			error("%s", e.message);

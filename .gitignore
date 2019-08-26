@@ -84,3 +84,10 @@ dkms.conf
 
 # End of https://www.gitignore.io/api/c,linux,visualstudiocode
 
+### Project files
+
+*.csv
+
+### Valacompiler
+
+valacompiler/valacompiler.test

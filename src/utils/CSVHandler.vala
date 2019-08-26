@@ -1,7 +1,49 @@
 class CSVHandler : Object {
 
 public static string[] csv_to_array (string record) {
-	string[] items = record.split (", ");
+	string[] items = {};
+	string character;
+	string previous_character = "";
+	string current_item = "";
+	bool isEscapeOpened = false;
+
+	for (int i = 0; i < record.char_count(); i++) {
+		character = record.get_char(record.index_of_nth_char(i)).to_string();
+
+		switch (character) {
+		case ",": {
+			if (!isEscapeOpened) {
+				items += current_item;
+				current_item = "";
+			} else {
+				current_item += character;
+			}
+			break;
+		}
+		case " ": {
+			if (!(previous_character == "," && !isEscapeOpened)) {
+				current_item += character;
+			}
+			break;
+		}
+		case "\"": {
+			if (!isEscapeOpened) {
+				isEscapeOpened = true;
+			} else {
+				isEscapeOpened = false;
+			}
+			break;
+		}
+		default: {
+			current_item += character;
+			break;
+		}
+		}
+	}
+	// check last position
+	if (current_item != "") {
+		items += current_item;
+	}
 
 	return items;
 }
