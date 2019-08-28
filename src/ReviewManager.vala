@@ -44,9 +44,9 @@ public static void read_classrom_data (string path) {
 /**
  * It reads a csv file and print: student name - average
  */
-public static void read_and_print_media (string path) {
+public static void read_and_print_media (string path, long number_records) {
 	File file = File.new_for_path(path);
-	int review_number_properties = 30;
+	int review_number_properties = 6;
 
 	if (!file.query_exists ()) {
 		stderr.printf ("File '%s' doesn't exist.\n", file.get_path());
@@ -56,15 +56,13 @@ public static void read_and_print_media (string path) {
 			var review_data = new string[review_number_properties];
 			string line;
 			// while ((line = dis.read_line(null)) != null) {
-			int i=0;
-			while (i++ < 5) {
+			long i = number_records;
+			line = dis.read_line(null);     // discard first line
+			while (i-- > 0) {
 				line = dis.read_line(null);
 				review_data = CSVHandler.csv_to_array (line);
-
-				//stdout.printf ("Aluno: %s\tMédia: %.2f\n", review_data[1], ((float.parse (review_data[2]) + float.parse (review_data[3]))/2));
-				stdout.printf ("Review: ");
 				foreach (var item in review_data) {
-					stdout.printf ("%s ", item);
+					stdout.printf ("%s\n", item);
 				}
 				stdout.printf ("\n");
 			}

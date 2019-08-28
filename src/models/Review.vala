@@ -42,7 +42,7 @@ public string game_name {
 }
 
 public string to_string () {
-	return @"$_index, $_user, $_rating, $_comment, $_game_id, $_game_name";
+	return _comment == "" ? @"$_index, $_user, $_rating, $_game_id, $_game_name" : @"$_index, $_user, $_rating, $_comment, $_game_id, $_game_name";
 }
 
 }

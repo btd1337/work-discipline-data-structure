@@ -11,8 +11,7 @@ static int main (string[] args) {
 	                stdout.printf ("'%s'\n", str);
 	        }
 	   }  */
-
-	ReviewManager.read_and_print_media ("bgg-13m-reviews.csv");
+	read_input ("entrada.txt");
 
 	return 0;
 }
@@ -20,3 +19,24 @@ static int main (string[] args) {
 /*  public void sort_by_id (Array <Review> collection) {
         Sorter.bubble_sort (collection);
    }  */
+
+public void read_input (string path) {
+	File file = File.new_for_path(path);
+	if (!file.query_exists ()) {
+		stderr.printf ("File '%s' doesn't exist.\n", file.get_path());
+	} else {
+		try {
+			var dis = new DataInputStream (file.read());
+			string line;
+			line = dis.read_line (null);
+			int number_analyses = int.parse (line);
+			int number_elements;
+			while (number_analyses-- > 0) {
+				number_elements = int.parse (dis.read_line (null));
+				ReviewManager.read_and_print_media ("bgg-13m-reviews.csv", number_elements);
+			}
+		} catch (Error e) {
+			error("%s", e.message);
+		}
+	}
+}
