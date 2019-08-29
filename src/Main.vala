@@ -33,7 +33,7 @@ public void read_input (string path) {
 			int number_elements;
 			while (number_analyses-- > 0) {
 				number_elements = int.parse (dis.read_line (null));
-				ReviewManager.read_and_print_media ("bgg-13m-reviews.csv", number_elements);
+				ReviewManager.read_and_print_file ("bgg-13m-reviews.csv", number_elements);
 			}
 		} catch (Error e) {
 			error("%s", e.message);

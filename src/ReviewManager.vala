@@ -2,51 +2,16 @@ using Readline;
 
 class ReviewManager : Object {
 
-public static void get_student_data () {
-	int cmd = 0;
-	var student = new Student ();
-
-	do {
-		stdout.printf("\n==== NEW STUDENT ===\n\n");
-		student.registration_number = int.parse (readline ("Registration Number: "));
-		student.name = readline ("Name: ");
-		student.set_test_grade(1, float.parse (readline ("Exam Note 1: ")));
-		student.set_test_grade(2, float.parse (readline ("Exam Note 2: ")));
-
-		write_student_data("class.txt", student);
-
-		cmd = int.parse (readline ("Continue? (0- No, 1- Yes): "));
-	} while (cmd != 0);
-}
-
 /**
- * It reads a list of students and print each record
+ * It reads a csv file and
  */
-public static void read_classrom_data (string path) {
-	File file = File.new_for_path(path);
-
-	if (!file.query_exists ()) {
-		stderr.printf ("File '%s' doesn't exist.\n", file.get_path());
-	} else {
-		try {
-			var dis = new DataInputStream (file.read());
-			string line;
-
-			while ((line = dis.read_line(null)) != null) {
-				stdout.printf ("%s\n", line);
-			}
-		} catch (Error e) {
-			error("%s", e.message);
-		}
-	}
-}
-
-/**
- * It reads a csv file and print: student name - average
- */
-public static void read_and_print_media (string path, long number_records) {
-	File file = File.new_for_path(path);
+public static void read_and_print_file (string path, long number_records) {
+	long total_number_reviews = 13170074;        // bgg-13m-reviews
+	uint range = (uint) (total_number_reviews / number_records);
+	long number_drawn;
 	int review_number_properties = 6;
+
+	File file = File.new_for_path(path);
 
 	if (!file.query_exists ()) {
 		stderr.printf ("File '%s' doesn't exist.\n", file.get_path());
@@ -56,15 +21,20 @@ public static void read_and_print_media (string path, long number_records) {
 			var review_data = new string[review_number_properties];
 			string line;
 			// while ((line = dis.read_line(null)) != null) {
-			long i = number_records;
-			line = dis.read_line(null);     // discard first line
-			while (i-- > 0) {
-				line = dis.read_line(null);
-				review_data = CSVHandler.csv_to_array (line);
-				foreach (var item in review_data) {
-					stdout.printf ("%s\n", item);
+			line = dis.read_line();
+			for (long i = 0; i < number_records; i++) {
+				number_drawn = Random.int_range (1, (int) range); // percorrer de range em range
+				for (long j = 0; j < range; j++ ) {
+					line = dis.read_line();
+
+					if (j == number_drawn) {
+						review_data = CSVHandler.csv_to_array (line);
+						foreach (var item in review_data) {
+							stdout.printf ("%s ", item);
+						}
+						stdout.printf ("\n");
+					}
 				}
-				stdout.printf ("\n");
 			}
 		} catch (Error e) {
 			error("%s", e.message);
@@ -72,17 +42,4 @@ public static void read_and_print_media (string path, long number_records) {
 	}
 }
 
-public static void write_student_data (string path, Student student) {
-	// reference a local file name
-	File file = File.new_for_path (path);
-
-	try {
-		// create a new file with this name
-		FileOutputStream file_stream = file.append_to (FileCreateFlags.NONE);
-		file_stream.write (@"$student\n".data);
-
-	} catch (Error e) {
-		stderr.printf ("Error: %s\n", e.message);
-	}
-}
 }
