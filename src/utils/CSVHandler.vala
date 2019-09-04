@@ -10,33 +10,33 @@ public static string[] csv_to_array (string record) {
 		character = record.get_char(record.index_of_nth_char(i)).to_string();
 
 		switch (character) {
-		case ",": {
-			if (!isEscapeOpened) {
-				items += current_item;
-				current_item = "";
-			} else {
+			case ",": {
+				if (!isEscapeOpened) {
+					items += current_item;
+					current_item = "";
+				} else {
+					current_item += character;
+				}
+				break;
+			}
+			case " ": {
+				if (!(previous_character == "," && !isEscapeOpened)) {
+					current_item += character;
+				}
+				break;
+			}
+			case "\"": {
+				if (!isEscapeOpened) {
+					isEscapeOpened = true;
+				} else {
+					isEscapeOpened = false;
+				}
+				break;
+			}
+			default: {
 				current_item += character;
+				break;
 			}
-			break;
-		}
-		case " ": {
-			if (!(previous_character == "," && !isEscapeOpened)) {
-				current_item += character;
-			}
-			break;
-		}
-		case "\"": {
-			if (!isEscapeOpened) {
-				isEscapeOpened = true;
-			} else {
-				isEscapeOpened = false;
-			}
-			break;
-		}
-		default: {
-			current_item += character;
-			break;
-		}
 		}
 	}
 	// check last position
