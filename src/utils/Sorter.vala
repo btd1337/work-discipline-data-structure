@@ -1,6 +1,6 @@
 class Sorter : Object {
 
-/*  public static bubble_sort (Array<Review> collection) {
+/*  public static void bubble_sort (Array<Review> collection) {
         bool isChanged;
 
         for (int i = 0; i < collection.length; i++) {
