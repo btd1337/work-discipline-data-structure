@@ -20,41 +20,35 @@ class Sorter : Object {
         collection.index (j+1) = aux_item;
    }  */
 
-	public static long[] quicksort (Array<Review> vector)
+	public static uint quicksort_partition (Array<Review> vector, uint start, uint end)
 	{
-		long start = 0;
-		long end = vector.length - 1;
-		quicksort_aux(vector, start, end);
+		uint pivot = start;
+		Review aux = new Review ();
 
-		return vector;
+		for (uint i = start + 1; i < end + 1; i++) {
+			if (vector.index (pivot).game_id <= vector.index (start).game_id) {
+				pivot += 1;
+				aux = vector.index (pivot);
+				vector.index (pivot) = vector.index (i);
+				vector.index (i) = aux;
+			}
+		}
+
+		aux = vector.index (pivot);
+		vector.index (pivot) = vector.index (start);
+		vector.index (start) = aux;
+
+		return pivot;
 	}
 
-	public static void quicksort_aux (Array<Review> vector, long start, long end)
+	public static void quicksort (Array<Review> vector, uint start, uint end)
 	{
+		uint pivot;
 		if (start < end) {
-			long p = vector.index(start);
-			long i = start + 1;
-			long f = end;
+			pivot = quicksort_partition (vector, start, end);
 
-			while (i <= f) {
-				if (vector.index(i) <= p) {
-					i++;
-				} else if (p < vector.index(f)) {
-					f--;
-				} else {
-					long aux = vector.index(i);
-					vector.index(i) = vector.index(f);
-					vector.index(f) = aux;
-					i++;
-					f--;
-				}
-			}
-
-			vector.index(start) = vector.index(f);
-			vector.index(f) = p;
-
-			quicksort_aux(vector, start, f - 1);
-			quicksort_aux(vector, f + 1, end);
+			quicksort(vector, start, pivot - 1);
+			quicksort(vector, pivot + 1, end);
 		}
 	}
 }

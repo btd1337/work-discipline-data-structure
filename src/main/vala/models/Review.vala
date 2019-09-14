@@ -1,4 +1,4 @@
-class Review : Object {
+public class Review : Object {
 
 	private ulong _index;
 	private string _user;
@@ -7,15 +7,18 @@ class Review : Object {
 	private ulong _game_id;
 	private string _game_name;
 
-	public Review () {}
+	public Review ()
+	{
+	}
 
-	public Review.with_data (string[] review_data) {
-		_index 		= ulong.parse (review_data[0]);
-		_user 		= review_data[1];
-		_rating 	= float.parse (review_data[2]);
-		_comment 	= review_data[3];
-		_game_id 	= ulong.parse (review_data[4]);
-		_game_name 	= review_data[5];
+	public Review.with_data (string[] review_data)
+	{
+		_index = ulong.parse (review_data[0]);
+		_user = review_data[1];
+		_rating = float.parse (review_data[2]);
+		_comment = review_data[3];
+		_game_id = ulong.parse (review_data[4]);
+		_game_name = review_data[5];
 	}
 
 	public ulong index {
@@ -48,7 +51,8 @@ class Review : Object {
 		set { _game_name = value; }
 	}
 
-	public string to_string () {
+	public string to_string ()
+	{
 		return _comment == "" ? @"$_index, $_user, $_rating, $_game_id, $_game_name" : @"$_index, $_user, $_rating, $_comment, $_game_id, $_game_name";
 	}
 
