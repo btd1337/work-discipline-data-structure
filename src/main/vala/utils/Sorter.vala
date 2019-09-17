@@ -20,33 +20,27 @@ class Sorter : Object {
         collection.index (j+1) = aux_item;
    }  */
 
-	public static uint quicksort_partition (Array<Review> vector, uint start, uint end)
+	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end)
 	{
-		uint pivot = start;
-		Review aux = new Review ();
+		ulong pivot = end;
+		ulong pivot_position = start;
 
-		for (uint i = start + 1; i < end + 1; i++) {
-			if (vector.index (pivot).game_id <= vector.index (start).game_id) {
-				pivot += 1;
-				aux = vector.index (pivot);
-				vector.index (pivot) = vector.index (i);
-				vector.index (i) = aux;
+		for (ulong i = start; i < end; i++) {
+			if (vector[i].game_id <= vector[pivot].game_id) {
+				ReviewManager.swap_elements (vector, pivot_position, i);
+				pivot_position++;
 			}
 		}
 
-		aux = vector.index (pivot);
-		vector.index (pivot) = vector.index (start);
-		vector.index (start) = aux;
+		ReviewManager.swap_elements (vector, pivot, pivot_position);
 
-		return pivot;
+		return pivot_position;
 	}
 
-	public static void quicksort (Array<Review> vector, uint start, uint end)
+	public static void quicksort (Review[] vector, ulong start, ulong end)
 	{
-		uint pivot;
 		if (start < end) {
-			pivot = quicksort_partition (vector, start, end);
-
+			ulong pivot = quicksort_partition (vector, start, end);
 			quicksort(vector, start, pivot - 1);
 			quicksort(vector, pivot + 1, end);
 		}
