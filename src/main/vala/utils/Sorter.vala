@@ -20,41 +20,29 @@ class Sorter : Object {
         collection.index (j+1) = aux_item;
    }  */
 
-	public static long[] quicksort (Array<Review> vector)
+	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end)
 	{
-		long start = 0;
-		long end = vector.length - 1;
-		quicksort_aux(vector, start, end);
+		ulong pivot = end;
+		ulong pivot_position = start;
 
-		return vector;
+		for (ulong i = start; i < end; i++) {
+			if (vector[i].game_id <= vector[pivot].game_id) {
+				ReviewManager.swap_elements (vector, pivot_position, i);
+				pivot_position++;
+			}
+		}
+
+		ReviewManager.swap_elements (vector, pivot, pivot_position);
+
+		return pivot_position;
 	}
 
-	public static void quicksort_aux (Array<Review> vector, long start, long end)
+	public static void quicksort (Review[] vector, ulong start, ulong end)
 	{
 		if (start < end) {
-			long p = vector.index(start);
-			long i = start + 1;
-			long f = end;
-
-			while (i <= f) {
-				if (vector.index(i) <= p) {
-					i++;
-				} else if (p < vector.index(f)) {
-					f--;
-				} else {
-					long aux = vector.index(i);
-					vector.index(i) = vector.index(f);
-					vector.index(f) = aux;
-					i++;
-					f--;
-				}
-			}
-
-			vector.index(start) = vector.index(f);
-			vector.index(f) = p;
-
-			quicksort_aux(vector, start, f - 1);
-			quicksort_aux(vector, f + 1, end);
+			ulong pivot = quicksort_partition (vector, start, end);
+			quicksort(vector, start, pivot - 1);
+			quicksort(vector, pivot + 1, end);
 		}
 	}
 }

@@ -20,8 +20,7 @@
     # installed by your distro's package manager
     # of choice
     "dependencies": [
-    		"glib-2.0",
+    	"glib-2.0",
         "gio-2.0",
-		"readline"
     ]
 }
