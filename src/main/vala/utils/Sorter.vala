@@ -20,29 +20,32 @@ class Sorter : Object {
         collection.index (j+1) = aux_item;
    }  */
 
-	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end)
+	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
 		ulong pivot = end;
 		ulong pivot_position = start;
 
 		for (ulong i = start; i < end; i++) {
+			statistic.increment_comparisons_number();
 			if (vector[i].game_id <= vector[pivot].game_id) {
 				ReviewManager.swap_elements (vector, pivot_position, i);
 				pivot_position++;
+				statistic.increment_swaps_number();
 			}
 		}
 
 		ReviewManager.swap_elements (vector, pivot, pivot_position);
+		statistic.increment_swaps_number();
 
 		return pivot_position;
 	}
 
-	public static void quicksort (Review[] vector, ulong start, ulong end)
+	public static void quicksort (Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
 		if (start < end) {
-			ulong pivot = quicksort_partition (vector, start, end);
-			quicksort(vector, start, pivot - 1);
-			quicksort(vector, pivot + 1, end);
+			ulong pivot = quicksort_partition (vector, start, end, statistic);
+			quicksort(vector, start, pivot - 1, statistic);
+			quicksort(vector, pivot + 1, end, statistic);
 		}
 	}
 }
