@@ -23,11 +23,13 @@ class Sorter : Object {
 	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
 		ulong pivot = end;
+		bool is_start_in_index_zero = (start == 0) ? true : false;
+
 		ulong pivot_position = start;
 
 		for (ulong i = start; i < end; i++) {
 			statistic.increment_comparisons_number();
-			if (vector[i].game_id <= vector[pivot].game_id) {
+			if (vector[i].game_id < vector[pivot].game_id) {
 				ReviewManager.swap_elements (vector, pivot_position, i);
 				pivot_position++;
 				statistic.increment_swaps_number();
@@ -44,7 +46,9 @@ class Sorter : Object {
 	{
 		if (start < end) {
 			ulong pivot = quicksort_partition (vector, start, end, statistic);
-			quicksort(vector, start, pivot - 1, statistic);
+			ulong left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
+
+			quicksort(vector, start, left_pivot_element, statistic);
 			quicksort(vector, pivot + 1, end, statistic);
 		}
 	}

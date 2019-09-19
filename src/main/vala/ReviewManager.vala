@@ -15,7 +15,6 @@ class ReviewManager : Object {
 		int review_number_properties = 6;
 		Review[] analyzed_reviews = {};
 
-
 		File file = File.new_for_path(path);
 
 		if (!file.query_exists ()) {
@@ -25,20 +24,26 @@ class ReviewManager : Object {
 				var dis = new DataInputStream (file.read());
 				var review_data = new string[review_number_properties];
 				string line;
+				ulong record_number = 0;
 				// while ((line = dis.read_line(null)) != null) {
 				line = dis.read_line();
 				for (ulong i = 0; i < number_records; i++) {
 					number_drawn = Random.int_range (1, (int)range);
-					for (ulong j = 0; j < range; j++ ) {                              // go from range to range
+					for (ulong j = 0; j < range; j++ ) {                            // go from range to range
 						line = dis.read_line();
 
 						if (j == number_drawn) {
 							review_data = CSVHandler.csv_to_array (line);           // get a review in array format
 							var review = new Review.with_data (review_data);
 							analyzed_reviews += review;
+							record_number++;
+						}
+						if (analyzed_reviews.length == number_records) {
+							break;
 						}
 					}
 				}
+				stdout.printf ("Reading completed.\n");
 				// Print array that is being analyzed
 				/*  for (int i = 0; i < analyzed_reviews.length; i++) {
 				        stdout.printf ("%s\n", analyzed_reviews.index (i).to_string ());

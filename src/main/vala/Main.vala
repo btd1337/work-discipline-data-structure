@@ -19,20 +19,17 @@ public void read_input (string path)
 			Statistic[] statistics = {};
 			while (number_analyses-- > 0) {
 				number_elements = ulong.parse (dis.read_line (null));
-				stdout.printf ("\nRealizando a leitura do arquivo...\n");             // it read number of elements that will be analysed
+				stdout.printf ("\nReading the file...\n");             // it read number of elements that will be analysed
 				Review[] reviews = ReviewManager.read_and_get_reviews ("bgg-13m-reviews.csv", number_elements);
-
-				stdout.printf ("Leitura concluída. Registros armazenados no array.\n");
 
 				var statistic = new Statistic ();
 				Sorter.quicksort (reviews, 0, reviews.length - 1, statistic);
 				// print_reviews (reviews);
-				stdout.printf ("%s\n", statistic.to_string());
 				statistics += statistic;
 			}
+			stdout.printf ("\n== Quicksort Statistics ==\n");
 			foreach (var item in statistics) {
-				stdout.printf ("Final\n");
-				stdout.printf ("%s", item.to_string());
+				stdout.printf ("%s\n", item.to_string());
 			}
 		} catch (Error e) {
 			error("%s", e.message);
