@@ -22,8 +22,9 @@ public void read_input (string path)
 				stdout.printf ("\nReading the file...\n");             // it read number of elements that will be analysed
 				Review[] reviews = ReviewManager.read_and_get_reviews ("bgg-13m-reviews.csv", number_elements);
 
-				var statistic = new Statistic ();
+				var statistic = new Statistic (number_elements);
 				Sorter.quicksort (reviews, 0, reviews.length - 1, statistic);
+				statistic.finish_runtime ();
 				// print_reviews (reviews);
 				statistics += statistic;
 			}
@@ -31,6 +32,7 @@ public void read_input (string path)
 			foreach (var item in statistics) {
 				stdout.printf ("%s\n", item.to_string());
 			}
+			write_quicksort_statistics(statistics);
 		} catch (Error e) {
 			error("%s", e.message);
 		}
@@ -42,4 +44,15 @@ public void print_reviews (Review[] reviews)
 	for (ulong i = 0; i < reviews.length; i++) {
 		stdout.printf ("%lu\n", reviews[i].game_id);
 	}
+}
+
+public void write_quicksort_statistics (Statistic[] statistics)
+{
+	string[] texts = {};
+	texts += "===   QuickSort ===   \n";
+	foreach (var item in statistics) {
+		texts += item.to_string();
+	}
+	texts += "\n";
+	GIO.write_file ("saida.txt", texts);
 }
