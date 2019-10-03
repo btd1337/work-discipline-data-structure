@@ -23,7 +23,7 @@ public void read_input (string path)
 				Review[] reviews = ReviewManager.read_and_get_reviews ("bgg-13m-reviews.csv", number_elements);
 
 				var statistic = new Statistic (number_elements);
-				Sorter.quicksort (reviews, 0, reviews.length - 1, statistic);
+				Sorter.quicksort (QuicksortType.RECURSIVE, reviews, 0, reviews.length - 1, statistic);
 				statistic.finish_runtime ();
 				// print_reviews (reviews);
 				statistics += statistic;

@@ -20,7 +20,7 @@ class Sorter : Object {
         collection.index (j+1) = aux_item;
    }  */
 
-	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end, Statistic statistic)
+	public static ulong quicksort_recursive_partition (Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
 		ulong pivot = end;
 		bool is_start_in_index_zero = (start == 0) ? true : false;
@@ -42,14 +42,25 @@ class Sorter : Object {
 		return pivot_position;
 	}
 
-	public static void quicksort (Review[] vector, ulong start, ulong end, Statistic statistic)
+	public static void quicksort (QuicksortType type, Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
 		if (start < end) {
-			ulong pivot = quicksort_partition (vector, start, end, statistic);
-			ulong left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
+			ulong pivot;
+			ulong left_pivot_element;
 
-			quicksort(vector, start, left_pivot_element, statistic);
-			quicksort(vector, pivot + 1, end, statistic);
+			switch (type) {
+			case QuicksortType.RECURSIVE: {
+				pivot = quicksort_recursive_partition (vector, start, end, statistic);
+				left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
+
+				quicksort (QuicksortType.RECURSIVE, vector, start, left_pivot_element, statistic);
+				quicksort (QuicksortType.RECURSIVE, vector, pivot + 1, end, statistic);
+				break;
+			}
+			default:
+				break;
+			}
+
 		}
 	}
 }
