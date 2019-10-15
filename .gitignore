@@ -127,3 +127,6 @@ valacompiler/valacompiler.test
 
 ### Meson
 build/
+
+!build/bgg-13m-reviews.csv
+!build/entrada.txt
