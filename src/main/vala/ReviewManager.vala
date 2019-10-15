@@ -25,10 +25,10 @@ class ReviewManager : Object {
 				var review_data = new string[review_number_properties];
 				string line;
 				ulong record_number = 0;
-				// while ((line = dis.read_line(null)) != null) {
+				var randomNumbers = new Rand.with_seed (Constraints.seed);
 				line = dis.read_line();
 				for (ulong i = 0; i < number_records; i++) {
-					number_drawn = Random.int_range (1, (int)range);
+					number_drawn = randomNumbers.int_range (1, (int)range);
 					for (ulong j = 0; j < range; j++ ) {                            // go from range to range
 						line = dis.read_line();
 
