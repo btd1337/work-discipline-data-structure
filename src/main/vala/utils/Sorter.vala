@@ -11,18 +11,38 @@ class Sorter : Object {
    }
  */
 
-/*  private bool is_greater_than (long val_a, long val_b) {
-        return val_a.game_id > val_b.game_id ? true : false;
-   }
-   private void swap_items (Array<Review> collection, long index_a, long index_b) {
-        Review aux_item = collection.index (j);
-        collection.index (j) = collection.index (j+1);
-        collection.index (j+1) = aux_item;
-   }  */
-
-	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end, Statistic statistic)
+	public static void quicksort (QuicksortType type, Review[] vector, ulong start, ulong end, Statistic statistic)
 	{
-		ulong pivot = end;
+		if (start < end) {
+			ulong pivot;
+			ulong left_pivot_element;
+
+			switch (type) {
+			case QuicksortType.RECURSIVE: {
+				pivot = quicksort_partition (vector, start, end, statistic, QuicksortType.RECURSIVE);
+				left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
+
+				quicksort (QuicksortType.RECURSIVE, vector, start, left_pivot_element, statistic);
+				quicksort (QuicksortType.RECURSIVE, vector, pivot + 1, end, statistic);
+				break;
+			};
+			case QuicksortType.MEDIAN: {
+				pivot = quicksort_partition (vector, start, end, statistic, QuicksortType.MEDIAN);
+				left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
+
+				quicksort (QuicksortType.MEDIAN, vector, start, left_pivot_element, statistic);
+				quicksort (QuicksortType.MEDIAN, vector, pivot + 1, end, statistic);
+				break;
+			};
+			default:
+				break;
+			}
+		}
+	}
+
+	public static ulong quicksort_partition (Review[] vector, ulong start, ulong end, Statistic statistic, QuicksortType type)
+	{
+		ulong pivot = get_pivot (vector, start, end, type);
 		bool is_start_in_index_zero = (start == 0) ? true : false;
 
 		ulong pivot_position = start;
@@ -42,14 +62,34 @@ class Sorter : Object {
 		return pivot_position;
 	}
 
-	public static void quicksort (Review[] vector, ulong start, ulong end, Statistic statistic)
-	{
-		if (start < end) {
-			ulong pivot = quicksort_partition (vector, start, end, statistic);
-			ulong left_pivot_element = pivot != 0 ? pivot - 1 : 0;  // prevent unsigned 0 subtract
 
-			quicksort(vector, start, left_pivot_element, statistic);
-			quicksort(vector, pivot + 1, end, statistic);
+
+	public static ulong get_pivot (Review[] vector, ulong start, ulong end, QuicksortType type)
+	{
+		uint number_elements;
+		switch (type) {
+			case QuicksortType.RECURSIVE: {
+				number_elements = 1;
+				break;
+			}
+			case QuicksortType.MEDIAN: {
+				number_elements = 3;
+				break;
+			}
+			default: {
+				number_elements = 1;
+				break;
+			}
+		}
+		// var randomNumbers = new Rand.with_seed (Constraints.seed);
+		if (number_elements == 1) {
+			// TODO implement random long range
+			// return randomNumbers.int_range (start, end);
+			return end;
+		} else {
+			// TODO implement random long range
+			// var lista = new Multiset<Pair>();
+			return end;
 		}
 	}
 }

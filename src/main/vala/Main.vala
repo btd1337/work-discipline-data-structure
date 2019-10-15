@@ -13,17 +13,22 @@ public void read_input (string path)
 	} else {
 		try {
 			var dis = new DataInputStream (file.read());
-			string line = dis.read_line (null);                                    // it read number of analyses
+			string line = dis.read_line (null);                     //  it read number of analyses
 			ulong number_analyses = ulong.parse (line);
 			ulong number_elements;
 			Statistic[] statistics = {};
 			while (number_analyses-- > 0) {
 				number_elements = ulong.parse (dis.read_line (null));
+				// Verification required to random int to be converted to long
+				if (number_elements < 10) {
+					stdout.printf ("This alghoritm needs at least 10 elements\n");
+					break;
+				}
 				stdout.printf ("\nReading the file...\n");             // it read number of elements that will be analysed
 				Review[] reviews = ReviewManager.read_and_get_reviews ("bgg-13m-reviews.csv", number_elements);
 
 				var statistic = new Statistic (number_elements);
-				Sorter.quicksort (reviews, 0, reviews.length - 1, statistic);
+				Sorter.quicksort (QuicksortType.RECURSIVE, reviews, 0, reviews.length - 1, statistic);
 				statistic.finish_runtime ();
 				// print_reviews (reviews);
 				statistics += statistic;
